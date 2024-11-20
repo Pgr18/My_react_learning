@@ -1,14 +1,20 @@
 import { FC } from 'react';
 import { ButtonProps } from './ButtonProps';
 import './buttonStyles.scss'
+import clsx from 'clsx';
 
 export const Button: FC<ButtonProps> = props => {
     const {
         onClick,
-        text
+        text,
+        type
     } = props;
+
     return (
-        <div onClick={onClick} className="button">
+        <div onClick={onClick} className={clsx('button',{
+            'button_primary': type === 'primary',
+            'button_secondary': type === 'secondary'
+        })}>
             {text}
         </div>
     );
