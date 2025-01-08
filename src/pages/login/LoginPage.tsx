@@ -3,17 +3,21 @@ import { TextField } from '../../components/textField';
 import { Button } from '../../components';
 import { WidgetLayout } from '../../components/layouts';
 import './loginPageStyles.scss'
+import { useNavigate } from 'react-router-dom';
+import { RoutesPaths } from '../../constants/commonConstants';
 
 export const LoginPage: FC = () => {
     const [login, setlogin] = useState<string>('');
 
     const [password, setPassword] = useState<string>('');
 
+    const navigate = useNavigate();
 
     const loginChangedHandler = (value: string) => {
         setlogin(value);
     }
-
+// 
+//
     const passwordChangedHandler = (value: string) => {
         setPassword(value);
     }
@@ -26,8 +30,8 @@ export const LoginPage: FC = () => {
     }
 
     const toRegistrationHandler = () => {
-
-    }
+        navigate(RoutesPaths.Registration);
+        }
 
     return (
         <WidgetLayout>
