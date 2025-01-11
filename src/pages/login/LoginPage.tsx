@@ -27,6 +27,7 @@ export const LoginPage: FC = () => {
             login,
             password
         });
+        navigate(RoutesPaths.Departments);
     }
 
     const toRegistrationHandler = () => {

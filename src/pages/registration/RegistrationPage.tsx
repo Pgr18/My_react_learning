@@ -34,6 +34,10 @@ export const RegistrationPage: FC = () => {
         )
     }
 
+    const registrationHandler = () => {
+        navigate(RoutesPaths.Departments);
+    }
+
     const goToLogin = () => {
         navigate(RoutesPaths.Login);
     }
@@ -51,7 +55,7 @@ export const RegistrationPage: FC = () => {
                     <TextField labelText="Отчество" value={formFields?.midName} type="text" onChange={(value) => changeFieldValue(value, 'login')} />
                 </div>
                 <div className="reg-page__actions">
-                    <Button text="Зарегистрироваться" onClick={()=>{}} type="primary" />
+                    <Button text="Зарегистрироваться" onClick={registrationHandler} type="primary" />
                     <Button text="Войти" onClick={goToLogin} type="secondary" />
                 </div>
             </div>
