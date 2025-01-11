@@ -2,6 +2,7 @@ import { FC } from "react";
 import { LayoutProps } from "./LayoutProps";
 import './LayoutStyles.scss'
 import { LogoIcon } from "../../../assets/icons/LogoIcon";
+import { UserMenu } from "../../userMenu";
 
 
 export const Layout: FC<LayoutProps> = props => {
@@ -22,9 +23,19 @@ export const Layout: FC<LayoutProps> = props => {
                     <div>{title ?? 'Header'}</div>
                     <div>{headerChild}</div>
                 </div>
-                <div></div>
+                <div>
+                    <UserMenu items = {[{
+                    id: 'go_to_profile',
+                    action: () => {},
+                    label: 'Перейти в профиль'
+                    }, {
+                        id: 'exit',
+                        action: () => {},
+                        label: 'Выйти'
+                    }]}/>
+                </div>
             </div>
-            <div className="layout_body">
+            <div className="layout__body">
                 {children}
                 </div>
             <div>{footer}</div>
