@@ -20,10 +20,10 @@ export const Layout: FC<LayoutProps> = props => {
                     <LogoIcon />
                 </div>
                 <div>
-                    <div>{title ?? 'Header'}</div>
+                    <div>{title ?? 'База сотрудников'}</div>
                     <div>{headerChild}</div>
                 </div>
-                <div>
+                <div className="layout__user-menu">
                     <UserMenu items = {[{
                     id: 'go_to_profile',
                     action: () => {},
