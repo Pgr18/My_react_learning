@@ -5,6 +5,7 @@ import { WidgetLayout } from '../../components/layouts';
 import './loginPageStyles.scss'
 import { useNavigate } from 'react-router-dom';
 import { RoutesPaths } from '../../constants/commonConstants';
+import { Auth } from '../../api';
 
 export const LoginPage: FC = () => {
     const [login, setlogin] = useState<string>('');
@@ -12,6 +13,8 @@ export const LoginPage: FC = () => {
     const [password, setPassword] = useState<string>('');
 
     const navigate = useNavigate();
+
+    const {signIn} = Auth;
 
     const loginChangedHandler = (value: string) => {
         setlogin(value);
@@ -23,11 +26,19 @@ export const LoginPage: FC = () => {
     }
 
     const loginHandler = () => {
-        console.log({
+       /* console.log({
             login,
             password
+        }); Доделать, когда будет API navigate (RoutesPaths.Departments)
+        navigate(RoutesPaths.Departments);*/
+
+        signIn({login,password})
+        .then((resp) => {
+            console.log(resp);
+        })
+        .catch((err) => {
+            console.log(err);
         });
-        navigate(RoutesPaths.Departments);
     }
 
     const toRegistrationHandler = () => {
