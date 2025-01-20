@@ -19,24 +19,20 @@ export const UsersList: FC<UsersListProps> = props => {
                         <div className="users-list__item-info">
                             <span>
                                 <strong>
-                                    Логин:
-                                </strong>
+                                    Логин: </strong>
                                 <span>
                                     {user.login}
                                 </span>
                             </span>
                             <span>
                                 <strong>
-                                    Пароль:
-                                </strong>
+                                    Пароль: </strong>
                                 <span>
                                     {user.password}
                                 </span>
                             </span>
                             <span>
-                                <strong>
-                                    Роль:
-                                </strong>
+                                <strong>Роль: </strong>
                                 <span>
                                     {user.role}
                                 </span>
