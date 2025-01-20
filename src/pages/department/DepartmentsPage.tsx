@@ -1,12 +1,14 @@
 import { FC, useEffect, useState } from "react";
 import { Layout } from "../../components/layouts";
-import { Button, DropDown, EmployeesList, TextField } from "../../components";
+import { Button, DropDown, EducationList, EmployeesList, FilesList, TextField, WorkExperienceList } from "../../components";
 import './departmentsPageStyles.scss'
 import { Dialog } from "../../components";
 import { Department, Employee } from "../../types/models";
 import { DropDownItem } from "../../components/dropDown/dropDownProps";
 import { get } from "http";
-import { UploadIcon } from "../../assets/icons";
+import { PlusIcon, UploadIcon } from "../../assets/icons";
+import { format } from "date-fns";
+
 
 const fakeEmployeesData = [
     { id: 1, lastName: 'Иванов', firstName: 'Иван', middleName: 'Иванович', birthDate: new Date().toISOString(), email: 'ivanov@mail.ru', phoneNumber: '8-800-555-35-35' },
@@ -181,6 +183,15 @@ export const DepartmentsPage: FC = () => {
 
     }
 
+    const downloadFileHandler = (id: number) => {
+
+    }
+
+    const deleteFileHandler = (id: number) => {
+
+    }
+
+
     return (
         <Layout>
             <Dialog title={userActionMode !== 'edit' ? 'Добавить сотрудника' : 'Изменить сотрудника'}
@@ -219,7 +230,12 @@ export const DepartmentsPage: FC = () => {
                             <div className="dep-page__user-info-pers-data">
                                 <div>
                                     <strong>Дата рождения: </strong>
-                                    <span>{selectedEmployee?.birthDate ?? '-'}</span>
+                                    <span>{
+                                        selectedEmployee?.birthDate
+                                            ? format(new Date(selectedEmployee.birthDate), 'dd.MM.yyyy')
+                                            : '-'
+                                    }
+                                    </span>
                                 </div>
                                 <div>
                                     <strong>Email: </strong>
@@ -233,13 +249,68 @@ export const DepartmentsPage: FC = () => {
                         </div>
 
                     </div>
-                    <div>
-                        <div>
-                            Files list
+                    <div className="dep-page__user-add-info">
+                        <div className="dep-page__user-add-info-files">
+                            <span className="dep-page__label">
+                                Прикреплённые файлы:
+                            </span>
+                            <FilesList
+                                onFileDownload={downloadFileHandler}
+                                onFileDelete={deleteFileHandler}
+                                filesList={[{
+                                    id: 1,
+                                    displayName: 'test file.txt',
+                                    systemName: 'abcdefg'
+                                }, {
+                                    id: 2,
+                                    displayName: 'testt file2.txt',
+                                    systemName: 'hijklmn'
+                                }]}/>
                         </div>
-                        <div>
-                            <div>Education list</div>
-                            <div>Данные о работе</div>
+                        <div className="dep-page__user-add-info-data">
+                            <div className="dep-page__user-add-info-data__cell">
+                                <div className="dep-page__list-title">
+                                    <span className="dep-page__label">
+                                        Данные об образовании:
+                                    </span>
+                                    <PlusIcon width={16} height={16} />
+                                </div>
+                                <EducationList educationList={[{
+                                    id: 1,
+                                    description: 'Инженер-программист',
+                                    title: 'Высшее образование'
+                                }, {
+                                    id: 2,
+                                    description: 'Системный администратор',
+                                    title: 'Высшее образование'
+                                }
+
+                                ]
+
+                                } />
+                            </div>
+                            <div className="dep-page__user-add-info-data__cell">
+                                <div className="dep-page__list-title">
+                                    <span className="dep-page__label">
+                                        Данные о работе:
+                                    </span>
+                                    <PlusIcon width={16} height={16} />
+                                </div>
+                                <WorkExperienceList workExperienceList={[{
+
+                                    id: 1,
+                                    workedYears: 3,
+                                    description: 'ООО Зеленоглазое такси'
+                                }, {
+                                    id: 2,
+                                    workedYears: 5,
+                                    description: 'ООО Моя оборона'
+                                }
+
+                                ]
+
+                                } />
+                            </div>
                         </div>
                     </div>
                 </div>
