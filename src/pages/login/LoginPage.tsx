@@ -32,11 +32,13 @@ export const LoginPage: FC = () => {
         }); Доделать, когда будет API navigate (RoutesPaths.Departments)
         navigate(RoutesPaths.Departments);*/
 
-        signIn({login,password})
-        .then((resp) => {
-            console.log(resp);
-        })
-        .catch((err) => {
+        signIn({login,password}).then(respData => {
+            if(respData.role === 'user') {
+                navigate(`/${RoutesPaths.NoPermissions}`);
+            } else {
+                navigate(`/${RoutesPaths.Departments}`);
+            }
+        }).catch ((err) => {
             console.log(err);
         });
     }

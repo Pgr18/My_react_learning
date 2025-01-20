@@ -1,26 +1,14 @@
 import { AxiosInstance } from "./axiosInstance";
+import { AccessTokenKey } from "../constants/commonConstants";
+import { LoginRequestDto, LoginResponseDto, RegistrationRequestDto } from "../types/apiTypes";
 
 const {axiosPost} = AxiosInstance();
 
-interface LoginRequestDto {
-    login: string;
-    password: string;
-}
-
-interface LoginResponseDto {
-    access_token: string;
-    username: string;
-    role: string;
-}
-
-interface RegistrationRequestDto {
-    login: string;
-    password: string;
-}
 
 const signIn = async (loginData: LoginRequestDto) => {
-    const { axiosPost } = AxiosInstance();
-    return await axiosPost('/login', loginData) as LoginResponseDto;
+    const data = await axiosPost('/login',loginData) as LoginResponseDto;
+    sessionStorage.setItem(AccessTokenKey,data.access_token);
+    return data;
 }
 
 const signUp = async(registrationData: RegistrationRequestDto) =>

@@ -25,7 +25,7 @@ export const RegistrationPage: FC = () => {
     const [formFields, setFormFields] = useState<RegistrationForm>();
     const [errorMessage,setErrorMessage] = useState<string>();
     const navigate = useNavigate();
-    const  {signUp} = Auth;
+    const  {signUp,signIn} = Auth;
 
     const changeFieldValue = (value: string | undefined, fieldName: FormFieldNames) => {
         setFormFields (prev => {
@@ -48,14 +48,24 @@ export const RegistrationPage: FC = () => {
             setErrorMessage('Пароль и повторенный пароль не совпадают!');
             return;
         }
-        signUp ({
-            login: formFields.login,
+
+        const data = {login: formFields.login,
             password: formFields.password
-        }).then(() => {
-            navigate(RoutesPaths.Departments);
-        }).catch((err) => {
+        };
+
+        signUp(data).then (() => {
+            signIn(data).then(respData => {
+                if(respData.role === 'user') {
+                    navigate(`/${RoutesPaths.NoPermissions}`);
+                } else {
+                    navigate(`/${RoutesPaths.Departments}`);
+                }
+            }).catch((err) => 
             setErrorMessage((err as AxiosError)?.message)
-        });
+        );
+    }).catch ((err) => {
+        setErrorMessage((err as AxiosError)?.message)
+    });
     }
 
 

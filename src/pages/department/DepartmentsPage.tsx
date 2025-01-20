@@ -6,56 +6,17 @@ import { Dialog } from "../../components";
 import { Department, Employee } from "../../types/models";
 import { DropDownItem } from "../../components/dropDown/dropDownProps";
 import { get } from "http";
-import { PlusIcon, UploadIcon } from "../../assets/icons";
+import { PencilIcon, PlusIcon, TrashIcon, UploadIcon } from "../../assets/icons";
 import { format } from "date-fns";
+import { Departments } from "../../api";
 
 
-const fakeEmployeesData = [
-    { id: 1, lastName: 'Иванов', firstName: 'Иван', middleName: 'Иванович', birthDate: new Date().toISOString(), email: 'ivanov@mail.ru', phoneNumber: '8-800-555-35-35' },
-    {
-        id: 2, lastName: 'Петров', firstName: 'Сергей', middleName: 'Дмитриевич', birthDate: new Date().toISOString(), email: 'ivanov@mail.ru', phoneNumber: '8-800-555-35-36',
-        educations: [
-            {
-                id: 1,
-                description: 'Системный администратор',
-                title: 'ВГПТТ №36'
-            }, {
-                id: 2,
-                description: 'Информационные системы и технологии',
-                title: 'ФГБОУ ВГПУ'
-            }, {
-                id: 3,
-                description: 'Курсы повышения квалификации',
-                title: 'Яндекс Практикум'
-            }
-        ],
-        workExperience: [
-            {
-                id: 1,
-                workedYears: 3,
-                description: 'ООО Техинформ сервис'
-            }, {
-                id: 2,
-                workedYears: 2,
-                description: 'Data Art'
-            }, {
-                id: 3,
-                workedYears: 4,
-                description: 'ООО Рексофт'
-            }
-        ]
-    },
 
-    { id: 3, lastName: 'Джон', firstName: 'Смитт', birthDate: new Date().toISOString(), email: 'ivanov@mail.ru', phoneNumber: '8-800-555-35-37' },
-    { id: 4, lastName: 'Рябчикова', firstName: 'Лидия', middleName: 'Анатольевна', birthDate: new Date().toISOString(), email: 'ivanov@mail.ru', phoneNumber: '8-800-555-38-35' },
-    { id: 5, lastName: 'Семенов', firstName: 'Олег', middleName: 'Артемович', birthDate: new Date().toISOString(), email: 'ivanov@mail.ru', phoneNumber: '8-800-555-39-35' }
-] as Array<Employee>;
-
-const fakeDepartmentsData = [
+/* const fakeDepartmentsData = [
     { id: 1, name: 'Отдел 1', employees: [] },
     { id: 2, name: 'Отдел 2', employees: fakeEmployeesData },
     { id: 3, name: 'Отдел 3', employees: [] }
-] as Array<Department>;
+] as Array<Department>; */
 
 /*const fakeDepartmentsData = [{
     text: 'Отдел 1', value: '1'
@@ -68,6 +29,7 @@ const fakeDepartmentsData = [
 
 
 export const DepartmentsPage: FC = () => {
+    const { getDepartments, deleteDepartment } = Departments;
     const [departmentsData, setDepartmentsData] = useState<Array<Department>>([]);
     const [employeesData, setEmployeesData] = useState<Array<Employee>>([]);
     const [selectedDepartmentId, setSelectedDepartmentId] = useState<number>();
@@ -85,13 +47,23 @@ export const DepartmentsPage: FC = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
 
     useEffect(() => {
-        setTimeout(() => {
+        getDepartments()
+        .then(respData => {
+            setDepartmentsData(respData);
+            if (respData.length) {
+                setSelectedDepartmentId(respData[0].id);
+            }
+        }).catch(err => {
+            setDepartmentsData([]);
+            console.log(err);
+        });
+/*         setTimeout(() => {
             setDepartmentsData(fakeDepartmentsData);
             if (Array.isArray(fakeDepartmentsData) && fakeDepartmentsData.length) {
                 setEmployeesData(fakeDepartmentsData[0].employees);
             }
-        }, 2000);
-    }, []);
+        }, 2000); */
+    }, [getDepartments]);
 
     useEffect(() => {
         const selectedDepartment = departmentsData.find(d => d.id === selectedDepartmentId);
@@ -100,7 +72,7 @@ export const DepartmentsPage: FC = () => {
     }, [departmentsData, selectedDepartmentId]);
 
     useEffect(() => {
-        setEmployeesData(fakeEmployeesData);
+        setEmployeesData([]);
     }, []);
 
     const clearEmployeeDialogFields = () => {
@@ -191,6 +163,22 @@ export const DepartmentsPage: FC = () => {
 
     }
 
+    const deleteDepartmentHandler = () => {
+        if (!window.confirm('Вы действительно хотите удалить данный отдел?')) {
+            return;
+        }
+        if (!selectedDepartmentId) {
+            return;
+        }
+        deleteDepartment(selectedDepartmentId).then(() => {
+            setDepartmentsData(prev => {
+                const filtered = prev.filter(d => d.id !== selectedDepartmentId)
+                return [...filtered];
+            });
+        }).catch (err => {
+            console.log(err);
+        });
+    }
 
     return (
         <Layout>
@@ -214,6 +202,9 @@ export const DepartmentsPage: FC = () => {
                         label="Отделы:"
                         selectedChanged={(val) => departmentChangedHandler(val)}
                     />
+                    <PlusIcon width={16} height={16} className="dep-page__add-btn" />
+                    <PencilIcon />
+                    <TrashIcon onClick={deleteDepartmentHandler} />
                     <EmployeesList employeesList={employeesData}
                         onItemClick={(id) => onEmployeeSelectedHandler(id)}
                         onItemDelete={(id) => console.log('delete', id)}
@@ -273,21 +264,9 @@ export const DepartmentsPage: FC = () => {
                                     <span className="dep-page__label">
                                         Данные об образовании:
                                     </span>
-                                    <PlusIcon width={16} height={16} />
+                                    <PlusIcon width={16} height={16} className="dep-page__add-btn"/>
                                 </div>
-                                <EducationList educationList={[{
-                                    id: 1,
-                                    description: 'Инженер-программист',
-                                    title: 'Высшее образование'
-                                }, {
-                                    id: 2,
-                                    description: 'Системный администратор',
-                                    title: 'Высшее образование'
-                                }
-
-                                ]
-
-                                } />
+                                <EducationList educationList= {selectedEmployee?.educations ?? []}/>
                             </div>
                             <div className="dep-page__user-add-info-data__cell">
                                 <div className="dep-page__list-title">
@@ -296,20 +275,7 @@ export const DepartmentsPage: FC = () => {
                                     </span>
                                     <PlusIcon width={16} height={16} />
                                 </div>
-                                <WorkExperienceList workExperienceList={[{
-
-                                    id: 1,
-                                    workedYears: 3,
-                                    description: 'ООО Зеленоглазое такси'
-                                }, {
-                                    id: 2,
-                                    workedYears: 5,
-                                    description: 'ООО Моя оборона'
-                                }
-
-                                ]
-
-                                } />
+                                <WorkExperienceList workExperienceList={selectedEmployee?.workExperience ?? []} />
                             </div>
                         </div>
                     </div>
