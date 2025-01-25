@@ -5,7 +5,7 @@ import { AddDepartmentResponseDto, EditDepartmentResponseDto } from "../types/ap
 
 
 const {axiosDelete, axiosGet, axiosPut, axiosPost} = AxiosInstance(sessionStorage.getItem(AccessTokenKey) ?? '');
-
+export const DepartmentsApi = () => {
 const getDepartments = async () => 
     await axiosGet('/Departments');
 
@@ -18,9 +18,10 @@ const editDepartment = async(editDepartmentData: EditDepartmentResponseDto) =>
 const deleteDepartment = async(id: string | number) => 
     await axiosDelete(`/Departments/department?id=${id}`) as void;
 
-export const Departments =  {
+return  {
     addDepartment,
     editDepartment,
     deleteDepartment,
     getDepartments
+}
 }

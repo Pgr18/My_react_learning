@@ -9,7 +9,7 @@ import { AxiosInstance } from './axiosInstance';
 
 const {axiosDelete, axiosPut, axiosPost} = AxiosInstance(sessionStorage.getItem(AccessTokenKey) ?? '');
 
-
+export const EmployeeApi = () => {
     const addEmployee = async(addEmployeeData: AddEmployeeResponseDto) => 
         await axiosPost('/Employees/employee', addEmployeeData) as number;
 
@@ -31,7 +31,7 @@ const {axiosDelete, axiosPut, axiosPost} = AxiosInstance(sessionStorage.getItem(
     const deleteEducation = async(id: string | number) => 
         await axiosDelete(`/Employees/education?id=${id}`) as void;
 
-    export const EmployeeApi =  {
+    return {
         addEmployee,
         editEmployee,
         deleteEmployee,
@@ -40,3 +40,4 @@ const {axiosDelete, axiosPut, axiosPost} = AxiosInstance(sessionStorage.getItem(
         addEducation,
         deleteEducation
     }
+}

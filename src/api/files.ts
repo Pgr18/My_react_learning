@@ -3,7 +3,7 @@ import { DownloadFileResponseDto, UploadFileResponseDto } from "../types/apiType
 import { AxiosInstance } from "./axiosInstance";
 
 const {axiosDelete, axiosPost} = AxiosInstance(sessionStorage.getItem(AccessTokenKey) ?? '');
-
+export const FilesApi = () => {
 const uploadFile = async(uploadFileData: UploadFileResponseDto) => 
     await axiosPost('/Files/upload', uploadFileData) as void;
 
@@ -13,8 +13,9 @@ const downloadFile = async(downloadFileData: DownloadFileResponseDto) =>
 const deleteFile = async(id: string | number) => 
     await axiosDelete(`/Files/delete?id=${id}`) as void
 
-export const FilesApi = {
+return {
     uploadFile,
     downloadFile,
     deleteFile
+}
 }
