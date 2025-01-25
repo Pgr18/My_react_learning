@@ -1,5 +1,7 @@
+import { labelWeight } from "../../types/commonTypes";
+
 type InfoType = 'info' | 'error' | 'success';
-type labelWeight = 'normal' | 'strong';
+
 
 export interface TextFieldProps {
     labelText?: string;

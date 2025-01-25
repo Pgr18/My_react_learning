@@ -1,12 +1,5 @@
 import { FC } from "react";
-
-interface IconProps {
-    width?: number | string;
-    height?: number | string;
-    color?: string;
-    className?: string;
-    onClick?: () => void;
-}
+import { IconProps } from "../../types/commonTypes";
 
 export const LogoIcon: FC<IconProps> = props => {
     const {
@@ -25,7 +18,9 @@ export const LogoIcon: FC<IconProps> = props => {
         height={height} 
         className={className}
         onClick={onClick}
-        viewBox="0 0 512 512" 
+        viewBox="0 0 512 512"
+        enableBackground="new 0 0 512 512"
+        xmlSpace="preserve" 
         version="1.1" 
         xmlns="http://www.w3.org/2000/svg" 
         xmlnsXlink="http://www.w3.org/1999/xlink"

@@ -25,7 +25,7 @@ export const TextField: FC<TextFieldProps> = props => {
             <label className = {clsx('container__lbl', {
                 'container__lbl_strong': lblWeight === 'strong'
             })}>{labelText}</label>
-            <input className = "containter__input" type = {type} value = {value} onChange = {changeValueHandler} />
+            <input className = "container__input" type = {type} value = {value} onChange = {changeValueHandler} />
             <span className = {clsx('container__info', {
                 'container__info_info':infoType === 'info',
                 'container__info_error':infoType === 'error',
