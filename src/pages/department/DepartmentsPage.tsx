@@ -48,7 +48,7 @@ export const DepartmentsPage: FC = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
+     useEffect(() => {
         if(accessToken) {
             if(role === 'user' || !role) {
                 navigate(`${RoutesPaths.NoPermissions}`);
@@ -58,7 +58,7 @@ export const DepartmentsPage: FC = () => {
         } else {
             navigate(`${RoutesPaths.Login}`);
         }
-    }, [accessToken, role, navigate, dispatch]);
+    }, [accessToken, role, navigate, dispatch]); 
 
     useEffect(() => {
         const selectedDepartment = selectedDepartmentId 
