@@ -5,30 +5,18 @@ import './departmentsPageStyles.scss'
 import { Dialog } from "../../components";
 import { Department, Employee } from "../../types/models";
 import { DropDownItem } from "../../components/dropDown/dropDownProps";
-import { get } from "http";
 import { PencilIcon, PlusIcon, TrashIcon, UploadIcon } from "../../assets/icons";
 import { format } from "date-fns";
 import { Departments } from "../../api";
-
-
-
-/* const fakeDepartmentsData = [
-    { id: 1, name: 'Отдел 1', employees: [] },
-    { id: 2, name: 'Отдел 2', employees: fakeEmployeesData },
-    { id: 3, name: 'Отдел 3', employees: [] }
-] as Array<Department>; */
-
-/*const fakeDepartmentsData = [{
-    text: 'Отдел 1', value: '1'
-}, {
-    text: 'Отдел 2', value: '2'
-}, {
-    text: 'Отдел 3', value: '3'
-}
-];*/
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkitHooks";
+import { useNavigate } from "react-router";
+import { RoutesPaths } from "../../constants/commonConstants";
 
 
 export const DepartmentsPage: FC = () => {
+    const {role, accessToken} = useAppSelector((state) => state.user);
+    //const dispatch = useAppDispatch();
+
     const { getDepartments, deleteDepartment } = Departments;
     const [departmentsData, setDepartmentsData] = useState<Array<Department>>([]);
     const [employeesData, setEmployeesData] = useState<Array<Employee>>([]);
@@ -45,6 +33,18 @@ export const DepartmentsPage: FC = () => {
     const [birthDate, setBirthDate] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(accessToken) {
+            if (role === 'user' || !role) {
+                navigate(`/${RoutesPaths.NoPermissions}`);
+            } else {
+                navigate(`/${RoutesPaths.Login}`);
+            }
+        }
+    }, [accessToken, role, navigate]);
 
     useEffect(() => {
         getDepartments()
@@ -202,16 +202,20 @@ export const DepartmentsPage: FC = () => {
                         label="Отделы:"
                         selectedChanged={(val) => departmentChangedHandler(val)}
                     />
-                    <PlusIcon width={16} height={16} className="dep-page__add-btn" />
+                    {role === 'admin' && ( <>
+                        <PlusIcon width={16} height={16} className="dep-page__add-btn" />
                     <PencilIcon />
                     <TrashIcon onClick={deleteDepartmentHandler} />
+                    </>
+                    )}
+                    </div>
                     <EmployeesList employeesList={employeesData}
                         onItemClick={(id) => onEmployeeSelectedHandler(id)}
                         onItemDelete={(id) => console.log('delete', id)}
                         onItemEdit={editEmployeeHadler}
                     />
                     <Button text="Добавить сотрудника" className="dep-page__add-user-btn" onClick={createEmployeeHandler} />
-                </div>
+                
                 <div className="dep-page__user-info-container">
                     <div className="dep_page__user-info-header">
                         <div className="dep-page__user-info-user">

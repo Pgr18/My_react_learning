@@ -1,8 +1,7 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { TrashIcon } from '../../assets/icons';
 import { WorkExperienceListProps } from "./workExperienceListProps";
 import './workExperienceListStyles.scss'
-import clsx from 'classnames';
 
 export const WorkExperienceList: FC<WorkExperienceListProps> = props => {
     const {

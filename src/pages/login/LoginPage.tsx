@@ -1,20 +1,31 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { TextField } from '../../components/textField';
 import { Button } from '../../components';
 import { WidgetLayout } from '../../components/layouts';
 import './loginPageStyles.scss'
 import { useNavigate } from 'react-router-dom';
 import { RoutesPaths } from '../../constants/commonConstants';
-import { Auth } from '../../api';
+import { signIn } from '../../services';
+import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkitHooks';
 
 export const LoginPage: FC = () => {
+    const {accessToken ,role} = useAppSelector ((state) => state.user);
+    const dispatch = useAppDispatch();
     const [login, setlogin] = useState<string>('');
 
     const [password, setPassword] = useState<string>('');
 
     const navigate = useNavigate();
 
-    const {signIn} = Auth;
+    useEffect (() => {
+        if (accessToken) {
+            if (role === 'user' || !role) {
+                navigate(`/${RoutesPaths.NoPermissions}`);
+            } else {
+                navigate(`/${RoutesPaths.Departments}`);
+            }
+        }
+    }, [accessToken, role, navigate]);
 
     const loginChangedHandler = (value: string) => {
         setlogin(value);
@@ -26,21 +37,7 @@ export const LoginPage: FC = () => {
     }
 
     const loginHandler = () => {
-       /* console.log({
-            login,
-            password
-        }); Доделать, когда будет API navigate (RoutesPaths.Departments)
-        navigate(RoutesPaths.Departments);*/
-
-        signIn({login,password}).then(respData => {
-            if(respData.role === 'user') {
-                navigate(`/${RoutesPaths.NoPermissions}`);
-            } else {
-                navigate(`/${RoutesPaths.Departments}`);
-            }
-        }).catch ((err) => {
-            console.log(err);
-        });
+        dispatch(signIn({login, password}));
     }
 
     const toRegistrationHandler = () => {
