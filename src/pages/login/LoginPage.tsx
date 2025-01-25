@@ -48,7 +48,7 @@ export const LoginPage: FC = () => {
         <WidgetLayout>
             <div className="login-page__form">
                 <h3 className="login-page__title">Вход</h3>
-                <div>
+                <div className="login-page__fields">
                     <TextField labelText="Логин" value={login} type="text" onChange={loginChangedHandler} />
                     <TextField labelText="Пароль" value={password} type="password" onChange={passwordChangedHandler} />
                 </div>

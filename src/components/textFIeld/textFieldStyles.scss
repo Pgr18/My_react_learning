@@ -1,4 +1,4 @@
-@import '../../styles/variables.scss';
+@import '../../styles/variables';
 .container {
     box-sizing: border-box;
     display: flex;
@@ -8,6 +8,7 @@
     &__lbl {
         color: $color-lbl;
         font-size: 14px;
+
         &_strong {
             font-weight: 600;
         }
