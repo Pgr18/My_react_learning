@@ -2,11 +2,11 @@ import axios from 'axios';
 
 export const AxiosInstance = (accessToken: string = '') => {
     const axiosInstance = axios.create({
-        baseURL: 'https://localhost:8089',
+        baseURL: 'https://localhost:7235',
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': 'true',
-            'Authorization': `Bearer ${accessToken}`
+            'Authorization': `bearer ${accessToken}`
         }
     });
 

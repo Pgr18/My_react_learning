@@ -6,12 +6,6 @@
     display: flex;
     gap: 15px;
 
-    &__label {
-        padding: 0 10px;
-        font-style: italic;
-        font-weight: 600;
-    }
-
     &__list-title {
         display: flex;
         justify-content: space-between;
@@ -19,9 +13,18 @@
         min-height: 32px;
         border-bottom: 1px solid $color-dirtywhite;
         box-shadow: 0px 1px 1px -1px $color-delimitershadow;
+    }
 
-        svg {
-            cursor: pointer;
+    &__label {
+        padding: 0 10px;
+        font-style: italic;
+        font-weight: 600;
+    }
+
+    &__add-btn {
+        cursor: pointer;
+        &:hover {
+            opacity: 0.8;
         }
     }
 
@@ -34,6 +37,16 @@
         display: flex;
         flex-direction: column;
         gap: 30px;
+    }
+
+    &__departments-list {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+    }
+
+    &__departments-drop-down {
+        width: 100%;
     }
 
     &__add-user-btn {
@@ -57,20 +70,20 @@
         padding-bottom: 10px;
     }
 
-    &__user-info-actions {
-        min-height: 32px;
-        min-width: 32px;
-        & svg {
-            cursor: pointer;
-            
-        }
-    }
-
-    &__user-info-user {
+    &__use-info-user {
         display: flex;
         flex-direction: column;
         gap: 8px;
         width: 100%;
+    }
+
+    &__user-info-actions {
+        min-height: 32px;
+        min-width: 32px;
+
+        & svg {
+            cursor: pointer;
+        }
     }
 
     &__user-info-fullname {
@@ -91,6 +104,8 @@
 
     &__user-add-info-files {
         min-width: 500px;
+        border-right: 1px solid $color-dirtywhite;
+        padding-right: 32px;
     }
 
     &__user-add-info-data {
@@ -104,11 +119,4 @@
             height: 50%;
         }
     }
-
-    &__user-add-info-files {
-        min-width: 500px;
-        border-right: 1px solid $color-dirtywhite;
-        padding-right: 32px;
-    }
-
 }

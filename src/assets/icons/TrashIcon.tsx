@@ -5,8 +5,8 @@ export const TrashIcon: FC<IconProps> = props => {
     const {
         className,
         color = '#000000',
-        height = 40,
-        width = 40,
+        height = 32,
+        width = 32,
         onClick
     } = props;
 

@@ -16,9 +16,9 @@ export interface Employee {
     lastName: string;
     middleName?: string;
     email: string;
-    phoneNumber:string;
-    birthDate:string;
-    educations: Array<Education>;
+    phoneNumber: string;
+    birthDate: string;
+    education: Array<Education>;
     workExperience: Array<WorkExperience>;
     userFiles: Array<UserFile>;
 }

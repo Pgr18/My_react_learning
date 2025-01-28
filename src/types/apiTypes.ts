@@ -47,7 +47,7 @@ export interface UpdateEmployeeResponseDto {
     email: string;
     phoneNumber: string;
     birthDate: string;
-    educations: Array<{
+    education: Array<{
         id: number;
         title: string;
         description?: string;
