@@ -5,7 +5,7 @@ import { Button, Dialog, DropDown, EducationList, EmployeesList, FilesList, Text
 import { Employee } from '../../types/models';
 import { DropDownItem } from '../../components/dropDown/dropDownProps';
 import { PencilIcon, PlusIcon, TrashIcon, UploadIcon } from '../../assets/icons';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks';
 import { useNavigate } from 'react-router-dom';
 import { RoutesPaths } from '../../constants/commonConstants';
@@ -29,7 +29,7 @@ export const DepartmentsPage: FC = () => {
     
     const [lastName, setLastName] = useState('');
     const [firstName, setFirstName] = useState('');
-    const [midleName, setMiddleName] = useState('');
+    const [middleName, setMiddleName] = useState('');
     const [birthDate, setBirthDate] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -134,12 +134,12 @@ export const DepartmentsPage: FC = () => {
         }
         const savingEmployee = {
             departmentId: selectedDepartmentId,
-            birthDate: new Date().toUTCString(),
+            birthDate: new Date(birthDate).toLocaleDateString(),
             email,
             firstName,
             lastName,
             phoneNumber,
-            midleName
+            middleName
         };
         if(userActionMode === 'create') {
             dispatch(addEmployee(savingEmployee))
@@ -148,7 +148,7 @@ export const DepartmentsPage: FC = () => {
             dispatch(editEmployee({
                 ...savingEmployee,
                 id: selectedEmployee.id,
-                educations: selectedEmployee.educations,
+                education: selectedEmployee.education,
                 userFiles: selectedEmployee.userFiles,
                 workExperience: selectedEmployee.workExperience
             }))
@@ -283,8 +283,8 @@ export const DepartmentsPage: FC = () => {
             >
                 <TextField labelText="Фамилия" value={lastName} onChange={(val) => setLastName(val)}/>
                 <TextField labelText="Имя" value={firstName} onChange={(val) => setFirstName(val)} />
-                <TextField labelText="Отчество" value={midleName} onChange={(val) => setMiddleName(val)} />
-                {/* <TextField type="date" labelText="Дата рождения" value={birthDate} onChange={(val) => setBirthDate(val)} /> */}
+                <TextField labelText="Отчество" value={middleName} onChange={(val) => setMiddleName(val)} />
+                <TextField type="date" labelText="Дата рождения" value={birthDate} onChange={(val) => setBirthDate(val)} />
                 <TextField labelText="Email" value={email} onChange={(val) => setEmail(val)} />
                 <TextField labelText="Телефон" value={phoneNumber} onChange={(val) => setPhoneNumber(val)} />
             </Dialog>
@@ -346,9 +346,9 @@ export const DepartmentsPage: FC = () => {
                             selectedChanged={(val) => depatmentChangedHandler(val)}
                         />
                         {role === 'admin' && (<>
-                            <PlusIcon width={16} height={16} className="dep-page__add-btn" onClick={createDepartmentHandler} />
-                            <PencilIcon onClick={editDepartmentHandler} />
-                            <TrashIcon onClick={deleteDepartmentHandler}/>
+                            <PlusIcon width={32} height={32} className="dep-page__add-btn" onClick={createDepartmentHandler} />
+                            <PencilIcon width={32} height={32} onClick={editDepartmentHandler} />
+                            <TrashIcon width={32} height={32} onClick={deleteDepartmentHandler}/>
                             </>
                         )}
                     </div>
@@ -370,7 +370,7 @@ export const DepartmentsPage: FC = () => {
                                     <strong>Дата рождения: </strong>
                                     <span>{
                                         selectedEmployee?.birthDate 
-                                            ? format(new Date(selectedEmployee.birthDate), 'dd.MM.yyyy')
+                                            ? format(parse(selectedEmployee.birthDate,'dd.MM.yyyy',new Date()), 'dd.MM.yyyy')
                                             : '-'
                                         }
                                     </span>
@@ -410,7 +410,7 @@ export const DepartmentsPage: FC = () => {
                                         <PlusIcon width={16} height={16} className="dep-page__add-btn" onClick={() => setShowEducationDialog(true)} />
                                     )}
                                 </div>
-                                <EducationList educationList={selectedEmployee?.educations ?? []} onDelete={(id) => {
+                                <EducationList educationList={selectedEmployee?.education ?? []} onDelete={(id) => {
                                     if(confirm('Вы действительно хотите удалить данную запись об образовании?')) {
                                         dispatch(deleteEducation(id));
                                     }

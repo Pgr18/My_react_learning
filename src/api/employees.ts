@@ -7,9 +7,11 @@ import {
 } from '../types/apiTypes';
 import { AxiosInstance } from './axiosInstance';
 
-const {axiosDelete, axiosPut, axiosPost} = AxiosInstance(sessionStorage.getItem(AccessTokenKey) ?? '');
-
 export const EmployeeApi = () => {
+    const token = sessionStorage.getItem(AccessTokenKey) ?? '';
+
+    const { axiosDelete, axiosPut, axiosPost} = AxiosInstance(token);
+
     const addEmployee = async(addEmployeeData: AddEmployeeResponseDto) => 
         await axiosPost('/Employees/employee', addEmployeeData) as number;
 
@@ -39,5 +41,5 @@ export const EmployeeApi = () => {
         deleteWorkExperience,
         addEducation,
         deleteEducation
-    }
+    };
 }

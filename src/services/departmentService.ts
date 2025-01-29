@@ -6,7 +6,7 @@ import { AddDepartmentResponseDto, AddEducationResponseDto, AddEmployeeResponseD
 import { EmployeeApi } from "../api";
 
 
-const NAMESPACE = 'departments';
+const NAMESPACE = 'Departments';
 
 export const getDepartments = createAsyncThunk<Array<Department>, undefined, AsyncThunkOptions> (
     `${NAMESPACE}/getDepartments`,
@@ -56,7 +56,7 @@ export const deleteDepartment = createAsyncThunk<Array<Department>, string | num
 );
 
 export const addEmployee = createAsyncThunk<Array<Department>, AddEmployeeResponseDto, AsyncThunkOptions> (
-    `${NAMESPACE}/addDepartment`,
+    `${NAMESPACE}/addEmployees`,
     async (addEmployeeData, { rejectWithValue }) => {
         try {
             await EmployeeApi().addEmployee(addEmployeeData);

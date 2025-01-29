@@ -4,8 +4,11 @@ import { AxiosInstance } from "./axiosInstance";
 import { AddDepartmentResponseDto, EditDepartmentResponseDto } from "../types/apiTypes";
 
 
-const {axiosDelete, axiosGet, axiosPut, axiosPost} = AxiosInstance(sessionStorage.getItem(AccessTokenKey) ?? '');
 export const DepartmentsApi = () => {
+
+    const token = sessionStorage.getItem(AccessTokenKey) ?? '';
+    
+    const { axiosDelete, axiosGet, axiosPut, axiosPost} = AxiosInstance(token);
 const getDepartments = async () => 
     await axiosGet('/Departments');
 
