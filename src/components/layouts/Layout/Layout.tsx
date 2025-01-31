@@ -21,6 +21,8 @@ export const Layout: FC<LayoutProps> = props => {
 
     const logOutHandler = () => {
         dispatch(logOut());
+        navigate(`/${RoutesPaths.Login}`);
+        
     }
 
     const goToAdministrationHandler = () => {

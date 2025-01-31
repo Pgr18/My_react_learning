@@ -52,6 +52,7 @@ const userSlice = createSlice({
             SetItemToSessionStorage(AccessTokenKey, null);
             SetItemToSessionStorage(RoleKey, null);
             SetItemToSessionStorage(UserNameKey, null);
+            
         }
     },
     extraReducers: (builder) => {
